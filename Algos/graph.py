@@ -1,10 +1,18 @@
-class UndirectedGraph:
+class Graph:
+    """
+    Class for a Graph. By default, these are actually directed graphs.
+    Graphs are represented with adjacency tables...or rather, adjacency
+    dictionaries.
+
+    (Note that by Graph, I mean in the "Verticies and Edges" sense, not
+    the "Visual representation of a function" sense. Which should be pretty
+    clear with a cursorary glance at the code, but hey.)
+    """
     def __init__(self, graph_dict=None):
         if graph_dict is None:
             self.graph_dict = {}
         else:
             self.graph_dict = graph_dict
-
 
     def addVertex(self, value):
         if value in self.graph_dict:
@@ -14,7 +22,25 @@ class UndirectedGraph:
             self.graph_dict[value] = []
             return True
 
+    def addEdge(self, edge):
+        """
+        Add an edge e = (v1, v2) to the graph. v1 and v2 should be verticies
+        already in the graph.
 
+        Returns True on successful addition of verticies, and False otherwise.
+        """
+        (vertex1, vertex2) = tuple(edge)
+        if not((vertex1 in self.graph_dict) and (vertex2 in self.graph_dict)):
+            print("PUT THE DAMN VERTICIES IN FIRST")
+            return False
+        self.graph_dict[vertex1].append(vertex2)
+        return True
+
+
+class UndirectedGraph(Graph):
+    """
+    An undirected graph. Extends class Graph.
+    """
     def addEdge(self, edge):
         edge = set(edge)
         (vertex1, vertex2) = tuple(edge)
@@ -71,7 +97,6 @@ class UndirectedGraph:
             for node in self.graph_dict[start]:
                 #if not node in visited:
                 visited[node] += 1
-                print(visited)
                 if (visited[node] < len(self.graph_dict[node])):
                     if not self.isTree(node, visited):
                         return False
@@ -85,10 +110,14 @@ class UndirectedGraph:
         output = ""
         output += "A graph is a pair of sets: {E (Edges), V (Verticies)}\n"
         output += "V is:\n"
+        output += "{"
         x = self.getVertices()
         output += str(x)
+        output += "}"
         output += "\n"
         output += "E is: \n"
         y = self.getEdges()
+        output += "{"
         output += str(y)
+        output += "}"
         return output
