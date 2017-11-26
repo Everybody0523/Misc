@@ -23,6 +23,7 @@ int main(int argc, char ** argv){
         for (int i = 0; i < reps; i++){
             system(command);
         }
+        free(command);
     }
     return 0;
 }
